@@ -1,0 +1,48 @@
+#reditWrapper{
+    background-color: #dae0ea;
+    min-width: 350px;
+    width: 60%;
+    margin: 10px auto;
+    padding: 20px;
+    border-radius: 25px;
+}
+
+#upperDiv, #lowerDiv{
+    margin-top: 20px;
+}
+
+#sortWrapper{
+    display: flex;
+}
+
+#sortWrapper .sort_by{
+    flex-direction: row;
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+@media screen and (max-width: 350px) {
+    #reditWrapper{
+        margin: 0;
+        width: 250px;
+        border-radius: 0px;
+    }
+    
+    #sortWrapper{
+        flex-direction: column;
+        line-height: 1.1em;
+        margin: 0;
+        padding: 0;
+    }
+
+    .lower_box > button, #limit, .sort_by, .title, .search_bar_div{
+        width: 80%;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+
+
+}
+
+
+
