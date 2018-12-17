@@ -105,7 +105,39 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   // Override the current require with this new one
   return newRequire;
 })({"index.js":[function(require,module,exports) {
+var searchBtn = document.getElementById("searchBtn");
+var limit = document.getElementById("limit");
+var searchDiv = document.getElementById("searchTerm");
+var timer = null;
+searchBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+  clearTimeout(timer);
+  var radioSelection = document.querySelector('input[name="sortby"]:checked').value;
+  var numLimit = limit.options[limit.selectedIndex].value;
+  var searchTerm = searchDiv.value; //will only display if user has blank field in search bar and submits
 
+  displayMessage(searchTerm, "Type something to search", "alert alert-danger");
+}, false);
+document.getElementById("searchTerm").addEventListener('input', function (e) {
+  if (e.target.value != "") {
+    clearTimeout(timer);
+    document.getElementById("messageDiv").style.display = "none";
+  }
+}, false);
+
+function displayMessage(text, msg, className) {
+  var message = document.getElementById("messageDiv");
+  var searchHasWords = false;
+
+  if (text == "") {
+    message.className = className;
+    message.style.display = "block";
+    message.innerHTML = msg;
+    timer = setTimeout(function () {
+      message.style.display = "none";
+    }, 4000);
+  }
+}
 },{}],"../../../Users/drago/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -133,7 +165,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50394" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53022" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
@@ -276,3 +308,4 @@ function hmrAccept(bundle, id) {
   });
 }
 },{}]},{},["../../../Users/drago/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
+//# sourceMappingURL=/findIt.e31bb0bc.map
