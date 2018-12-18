@@ -104,12 +104,39 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   // Override the current require with this new one
   return newRequire;
-})({"index.js":[function(require,module,exports) {
+})({"redditapi.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default = {
+  search: function search(searchTerm, limit, sortBy) {
+    var proxy = 'https://cors-anywhere.herokuapp.com/';
+    return fetch(proxy + "http://www.reddit.com/search.json?q=".concat(searchTerm, "&sort=").concat(sortBy, "&limit=").concat(limit)).then(function (results) {
+      return results.json();
+    }).then(function (data) {
+      return data.data.children.map(function (data) {
+        return data.data;
+      });
+    });
+  }
+};
+exports.default = _default;
+},{}],"index.js":[function(require,module,exports) {
+"use strict";
+
+var _redditapi = _interopRequireDefault(require("./redditapi"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var searchBtn = document.getElementById("searchBtn");
 var limit = document.getElementById("limit");
 var searchDiv = document.getElementById("searchTerm");
 var timer = null;
 searchBtn.addEventListener("click", function (e) {
+  checkForTextInSearchBar();
   e.preventDefault();
   clearTimeout(timer);
   var radioSelection = document.querySelector('input[name="sortby"]:checked').value;
@@ -117,13 +144,41 @@ searchBtn.addEventListener("click", function (e) {
   var searchTerm = searchDiv.value; //will only display if user has blank field in search bar and submits
 
   displayMessage(searchTerm, "Type something to search", "alert alert-danger");
+
+  _redditapi.default.search(searchTerm, numLimit, radioSelection).then(function (results) {
+    console.log(results);
+    var output = "<div class='card-columns card-columns-custom'>";
+    var image = "https://fh-uploads-hzscjv5a1k85do6fzz7kdmffiwhxul5bcoakysrttzf.netdna-ssl.com/582ab36d-a58b-449e-8e57-784dea3eeb09";
+
+    for (var i = 0; i < numLimit; i++) {
+      if (results[i].preview) {
+        image = results[i].preview.images[0].source.url;
+      }
+
+      output += "<div class=\"card card-custom\" style=\"width: 18rem;\">\n                <img class=\"card-img-top\" src=\"".concat(image, "\" alt=\"Card image cap\">\n                <div class=\"card-body\">\n                    <h5 class=\"card-title\">").concat(results[i].title, "</h5>\n                    <p class=\"card-text\">").concat(shortenText(100, results[i].selftext), "</p>\n                    <a href=\"").concat(results[i].url, "\" class=\"btn btn-primary\">Read More</a>\n                </div>\n            </div>");
+    }
+
+    output += "</div>";
+    document.getElementById("results").innerHTML = output;
+  });
 }, false);
-document.getElementById("searchTerm").addEventListener('input', function (e) {
-  if (e.target.value != "") {
-    clearTimeout(timer);
-    document.getElementById("messageDiv").style.display = "none";
+
+function shortenText(max, text) {
+  if (text.length >= max) {
+    return text.substr(max, text.length).indexOf(" ");
+  } else if (text.length < max || text == "") {
+    return text;
   }
-}, false);
+}
+
+function checkForTextInSearchBar() {
+  document.getElementById("searchTerm").addEventListener('input', function (e) {
+    if (e.target.value != "") {
+      clearTimeout(timer);
+      document.getElementById("messageDiv").style.display = "none";
+    }
+  }, false);
+}
 
 function displayMessage(text, msg, className) {
   var message = document.getElementById("messageDiv");
@@ -138,7 +193,7 @@ function displayMessage(text, msg, className) {
     }, 4000);
   }
 }
-},{}],"../../../Users/drago/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./redditapi":"redditapi.js"}],"../../../Users/drago/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -165,7 +220,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53022" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55743" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

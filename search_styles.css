@@ -6,7 +6,7 @@
     padding: 20px;
     border-radius: 25px;
 }
-
+ 
 #upperDiv, #lowerDiv{
     margin-top: 20px;
 }
@@ -19,6 +19,23 @@
     flex-direction: row;
     margin-top: 20px;
     margin-right: 10px;
+}
+
+.card-custom{
+    margin: 20px;
+}
+
+@media screen and (min-width: 300px) and (max-width: 1000px){
+    .card-columns-custom{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-custom{
+        min-width: 350px;
+        width: 80% !important;
+        margin: 10px auto;
+    }
 }
 
 @media screen and (max-width: 350px) {
